@@ -3,6 +3,7 @@ const navMenu = document.querySelector("#navLinks");
 const menuToggle = document.querySelector(".menu-toggle");
 const siteHeader = document.querySelector(".site-header");
 const loginModal = document.querySelector("#loginModal");
+const loginForm = loginModal?.querySelector(".modal-card");
 const form = document.querySelector("#bookingForm");
 const formNote = document.querySelector("#formNote");
 const levelAdvisor = document.querySelector("#levelAdvisor");
@@ -12,11 +13,18 @@ const timeSelect = form?.querySelector('select[name="time"]');
 const subjectCards = document.querySelectorAll(".subject-card");
 const planButtons = document.querySelectorAll("[data-plan]");
 const faqItems = document.querySelectorAll(".faq-item");
+const quickBook = document.querySelector(".quick-book");
+const statsPanel = document.querySelector(".stats-panel");
+const statCards = document.querySelectorAll(".stats-panel article");
+const statValues = document.querySelectorAll(".stats-panel strong");
 const STORAGE_KEY = "tutorings-booking-draft";
 const selectedChoices = {
   level: "",
   plan: "",
 };
+let toastTimer;
+let statCycleTimer;
+let statCycleIndex = 0;
 const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
 const revealItems = document.querySelectorAll(
   ".hero-copy, .hero-visual, .section-wrap, .booking, .step-card, .subject-card, .level-advisor, .plan-card, .faq-item"
@@ -65,6 +73,20 @@ function getRecommendation(goal, confidence) {
   };
 }
 
+function getSuggestedPlanForLevel(level) {
+  if (level === "C1 - متقدم") return "تحضير اختبار";
+  if (level === "B2 - فوق المتوسط" || level === "B1 - متوسط") return "خطة شهرية";
+  if (level) return "جلسة واحدة";
+  return "";
+}
+
+function getSuggestedLevelForPlan(plan) {
+  if (plan === "تحضير اختبار") return "B2 - فوق المتوسط";
+  if (plan === "خطة شهرية") return "B1 - متوسط";
+  if (plan === "جلسة واحدة") return "A1 - مبتدئ";
+  return "";
+}
+
 function normalizePhone(value) {
   const arabicDigits = "٠١٢٣٤٥٦٧٨٩";
   const easternDigits = "۰۱۲۳۴۵۶۷۸۹";
@@ -77,6 +99,102 @@ function normalizePhone(value) {
   if (normalized.startsWith("9665")) return `05${normalized.slice(4)}`;
   if (normalized.startsWith("5") && normalized.length === 9) return `0${normalized}`;
   return normalized;
+}
+
+function parseMetric(value) {
+  const match = String(value).trim().match(/^([\d,.]+)(.*)$/);
+  if (!match) return null;
+
+  const numeric = Number(match[1].replace(/,/g, ""));
+  if (!Number.isFinite(numeric)) return null;
+
+  return {
+    numeric,
+    decimals: match[1].includes(".") ? 1 : 0,
+    suffix: match[2] || "",
+    original: value,
+  };
+}
+
+function formatMetric(value, decimals, suffix) {
+  const formatted = decimals > 0 ? value.toFixed(decimals) : Math.round(value).toLocaleString("en-US");
+  return `${formatted}${suffix}`;
+}
+
+function showToast(message, tone = "info") {
+  let toast = document.querySelector(".app-toast");
+
+  if (!toast) {
+    toast = document.createElement("div");
+    toast.className = "app-toast";
+    toast.setAttribute("role", "status");
+    toast.setAttribute("aria-live", "polite");
+    document.body.append(toast);
+  }
+
+  toast.textContent = message;
+  toast.dataset.tone = tone;
+  toast.classList.add("is-visible");
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => {
+    toast.classList.remove("is-visible");
+  }, 3200);
+}
+
+function animateMetric(element, index) {
+  const metric = parseMetric(element.dataset.metricOriginal || element.textContent);
+  if (!metric) return;
+
+  const duration = prefersReducedMotion.matches ? 0 : 1300 + index * 120;
+  const startTime = performance.now();
+
+  if (duration === 0) {
+    element.textContent = metric.original;
+    return;
+  }
+
+  function tick(now) {
+    const progress = clamp((now - startTime) / duration, 0, 1);
+    const eased = 1 - Math.pow(1 - progress, 3);
+    element.textContent = formatMetric(metric.numeric * eased, metric.decimals, metric.suffix);
+
+    if (progress < 1) {
+      requestAnimationFrame(tick);
+    } else {
+      element.textContent = metric.original;
+    }
+  }
+
+  requestAnimationFrame(tick);
+}
+
+function activateStatCard(card) {
+  statCycleIndex = Array.from(statCards).indexOf(card);
+  statCards.forEach((item) => item.classList.toggle("is-active", item === card));
+}
+
+function startStatsCycle() {
+  if (!statsPanel?.classList.contains("has-counted")) return;
+  if (prefersReducedMotion.matches || statCards.length < 2) return;
+
+  clearInterval(statCycleTimer);
+  statCycleTimer = setInterval(() => {
+    statCycleIndex = (statCycleIndex + 1) % statCards.length;
+    activateStatCard(statCards[statCycleIndex]);
+  }, 2600);
+}
+
+function stopStatsCycle() {
+  clearInterval(statCycleTimer);
+}
+
+function runStats() {
+  if (!statsPanel || statsPanel.classList.contains("has-counted")) return;
+
+  statsPanel.classList.add("has-counted");
+  statValues.forEach((value, index) => animateMetric(value, index));
+  activateStatCard(statCards[0]);
+  startStatsCycle();
 }
 
 function getField(name) {
@@ -96,7 +214,40 @@ function updateBookingNote(message) {
   if (selectedChoices.plan) parts.push(`الخطة ${selectedChoices.plan}`);
   if (timeSelect?.value) parts.push(`الوقت ${timeSelect.value}`);
 
-  formNote.textContent = parts.length ? `اختياراتك الحالية: ${parts.join("، ")}. أكمل البيانات لتثبيت الحجز.` : "";
+  const missing = getMissingBookingFields();
+  const hasStarted = Boolean(
+    String(getField("name")?.value || "").trim() ||
+      String(getField("phone")?.value || "").trim() ||
+      subjectSelect?.value ||
+      timeSelect?.value ||
+      selectedChoices.level ||
+      selectedChoices.plan
+  );
+
+  if (parts.length && missing.length) {
+    formNote.textContent = `اختياراتك الحالية: ${parts.join("، ")}. الخطوة التالية: ${missing[0]}.`;
+  } else if (parts.length) {
+    formNote.textContent = `اختياراتك مكتملة: ${parts.join("، ")}. يمكنك تأكيد الحجز الآن.`;
+  } else if (hasStarted && missing.length) {
+    formNote.textContent = `الخطوة التالية: ${missing[0]}.`;
+  } else {
+    formNote.textContent = "";
+  }
+}
+
+function getMissingBookingFields() {
+  if (!form) return [];
+
+  const name = String(getField("name")?.value || "").trim();
+  const phone = normalizePhone(getField("phone")?.value || "");
+  const missing = [];
+
+  if (name.split(/\s+/).filter(Boolean).length < 2) missing.push("اكتب الاسم الكامل");
+  if (!/^05\d{8}$/.test(phone)) missing.push("أدخل رقم جوال صحيح");
+  if (!subjectSelect?.value) missing.push("اختر مستوى الإنجليزية");
+  if (!timeSelect?.value) missing.push("اختر الوقت المناسب");
+
+  return missing;
 }
 
 function updateFormReadyState() {
@@ -104,9 +255,22 @@ function updateFormReadyState() {
 
   const name = String(getField("name")?.value || "").trim();
   const phone = normalizePhone(getField("phone")?.value || "");
-  const isReady = name.split(/\s+/).filter(Boolean).length >= 2 && /^05\d{8}$/.test(phone) && Boolean(subjectSelect?.value) && Boolean(timeSelect?.value);
+  const fields = [
+    { field: getField("name"), done: name.split(/\s+/).filter(Boolean).length >= 2 },
+    { field: getField("phone"), done: /^05\d{8}$/.test(phone) },
+    { field: subjectSelect, done: Boolean(subjectSelect?.value) },
+    { field: timeSelect, done: Boolean(timeSelect?.value) },
+  ];
+  const completed = fields.filter((item) => item.done).length;
+  const isReady = completed === fields.length;
 
   form.classList.toggle("is-ready", isReady);
+  form.classList.toggle("has-progress", completed > 0);
+  form.style.setProperty("--booking-progress", `${(completed / fields.length) * 100}%`);
+
+  fields.forEach(({ field, done }) => {
+    field?.closest("label")?.classList.toggle("is-complete", done);
+  });
 }
 
 function saveDraft() {
@@ -139,6 +303,10 @@ function setSelectedSubject(level, options = {}) {
 
   if (options.scroll) {
     smoothScrollTo("#resources");
+  }
+
+  if (selectedChoices.level && !selectedChoices.plan && !options.skipPlanSuggestion) {
+    setSelectedPlan(getSuggestedPlanForLevel(selectedChoices.level), { silent: true });
   }
 
   if (!options.silent) {
@@ -208,6 +376,7 @@ function validateBookingForm() {
 
   if (firstInvalid) {
     updateBookingNote(firstInvalid.validationMessage || "يرجى تعبئة كل الحقول قبل تأكيد الحجز.");
+    showToast("راجع الحقول المطلوبة قبل تأكيد الحجز.", "warning");
     firstInvalid.focus({ preventScroll: true });
     return false;
   }
@@ -225,10 +394,13 @@ function restoreDraft() {
     if (draft.name && nameInput) nameInput.value = draft.name;
     if (draft.phone && phoneInput) phoneInput.value = draft.phone;
     if (draft.time && timeSelect) timeSelect.value = draft.time;
-    if (draft.subject) setSelectedSubject(draft.subject);
+    if (draft.subject) setSelectedSubject(draft.subject, { skipPlanSuggestion: true });
     if (draft.plan) setSelectedPlan(draft.plan);
     updateBookingNote();
     updateFormReadyState();
+    if (draft.name || draft.phone || draft.subject || draft.time || draft.plan) {
+      showToast("استعدنا اختياراتك السابقة.", "info");
+    }
   } catch {
     try {
       localStorage.removeItem(STORAGE_KEY);
@@ -260,6 +432,7 @@ function closeMenu() {
 
 function updateHeaderState() {
   siteHeader?.classList.toggle("is-scrolled", window.scrollY > 10);
+  quickBook?.classList.toggle("is-visible", window.scrollY > 520);
   const scrollable = document.documentElement.scrollHeight - window.innerHeight;
   const progress = scrollable > 0 ? Math.min(window.scrollY / scrollable, 1) : 0;
   siteHeader?.style.setProperty("--scroll-progress", progress.toFixed(4));
@@ -312,10 +485,15 @@ document.querySelectorAll("[data-book]").forEach((button) => {
       setSelectedPlan("جلسة واحدة", {
         note: "رائع. احجز جلستك المجانية الآن، وسنحدد مستواك وخطتك مع متخصص قبل أي اشتراك.",
       });
+    } else if (button.dataset.bookIntent === "quick") {
+      setSelectedPlan("جلسة واحدة", {
+        note: "تم اختيار الجلسة المجانية السريعة. اكتب بياناتك وسنرتب الموعد المناسب لك.",
+      });
     }
 
     smoothScrollTo("#resources");
     form?.querySelector("input")?.focus({ preventScroll: true });
+    showToast("انتقلنا لنموذج الحجز المجاني.", "info");
   });
 });
 
@@ -342,12 +520,60 @@ loginModal?.addEventListener("click", (event) => {
   }
 });
 
+loginForm?.addEventListener("submit", (event) => {
+  event.preventDefault();
+  const email = loginForm.querySelector('input[type="email"]');
+  const password = loginForm.querySelector('input[type="password"]');
+  const emailValue = String(email?.value || "").trim();
+  const passwordValue = String(password?.value || "");
+  let firstInvalid = null;
+
+  [email, password].forEach((field) => {
+    field?.classList.remove("field-invalid");
+    field?.setCustomValidity("");
+  });
+
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailValue)) {
+    email?.setCustomValidity("اكتب بريد إلكتروني صحيح.");
+    email?.classList.add("field-invalid");
+    firstInvalid = email;
+  }
+
+  if (passwordValue.length < 6) {
+    password?.setCustomValidity("كلمة المرور يجب أن تكون 6 أحرف على الأقل.");
+    password?.classList.add("field-invalid");
+    if (!firstInvalid) {
+      firstInvalid = password;
+    }
+  }
+
+  if (firstInvalid) {
+    firstInvalid.classList.add("field-invalid");
+    firstInvalid.focus();
+    showToast(firstInvalid.validationMessage, "warning");
+    return;
+  }
+
+  loginModal?.close();
+  loginForm.reset();
+  showToast("تم تسجيل الدخول بنجاح.", "success");
+});
+
+loginForm?.querySelectorAll("input").forEach((input) => {
+  input.addEventListener("input", () => {
+    input.classList.remove("field-invalid");
+    input.setCustomValidity("");
+  });
+});
+
 subjectCards.forEach((card) => {
   card.addEventListener("click", () => {
+    const suggestedPlan = getSuggestedPlanForLevel(card.dataset.subject || "");
     setSelectedSubject(card.dataset.subject || "", {
       scroll: true,
-      note: `تم اختيار ${card.dataset.subject}. أكمل البيانات لتثبيت الحجز.`,
+      note: `تم اختيار ${card.dataset.subject}${suggestedPlan ? ` واقتراح خطة ${suggestedPlan}` : ""}. أكمل البيانات لتثبيت الحجز.`,
     });
+    showToast("تم تحديث نموذج الحجز حسب مستواك.", "success");
   });
 });
 
@@ -366,15 +592,36 @@ levelAdvisor?.addEventListener("submit", (event) => {
   }
 
   updateBookingNote(`تم اختيار ${recommendation.level} وخطة ${recommendation.plan} بناءً على إجاباتك.`);
+  showToast("المساعد اختار المستوى والخطة المناسبة.", "success");
 });
 
 planButtons.forEach((button) => {
   button.addEventListener("click", () => {
+    const suggestedLevel = !selectedChoices.level ? getSuggestedLevelForPlan(button.dataset.plan || "") : "";
+    if (suggestedLevel) {
+      setSelectedSubject(suggestedLevel, { silent: true, skipPlanSuggestion: true });
+    }
+
     setSelectedPlan(button.dataset.plan || "", {
       scroll: true,
-      note: `تم اختيار ${button.dataset.plan}. أكمل البيانات لتثبيت الحجز.`,
+      note: `تم اختيار ${button.dataset.plan}${suggestedLevel ? ` واقتراح مستوى ${suggestedLevel}` : ""}. أكمل البيانات لتثبيت الحجز.`,
     });
+    showToast(`تم اختيار ${button.dataset.plan}.`, "success");
   });
+});
+
+statCards.forEach((card) => {
+  card.tabIndex = 0;
+  card.addEventListener("mouseenter", () => {
+    stopStatsCycle();
+    activateStatCard(card);
+  });
+  card.addEventListener("mouseleave", startStatsCycle);
+  card.addEventListener("focus", () => {
+    stopStatsCycle();
+    activateStatCard(card);
+  });
+  card.addEventListener("blur", startStatsCycle);
 });
 
 faqItems.forEach((item) => {
@@ -386,6 +633,26 @@ faqItems.forEach((item) => {
       }
     });
     item.setAttribute("aria-expanded", String(!isExpanded));
+  });
+
+  item.addEventListener("keydown", (event) => {
+    const currentIndex = Array.from(faqItems).indexOf(item);
+    let nextIndex = currentIndex;
+
+    if (event.key === "ArrowDown") {
+      nextIndex = (currentIndex + 1) % faqItems.length;
+    } else if (event.key === "ArrowUp") {
+      nextIndex = (currentIndex - 1 + faqItems.length) % faqItems.length;
+    } else if (event.key === "Home") {
+      nextIndex = 0;
+    } else if (event.key === "End") {
+      nextIndex = faqItems.length - 1;
+    } else {
+      return;
+    }
+
+    event.preventDefault();
+    faqItems[nextIndex]?.focus();
   });
 });
 
@@ -403,6 +670,7 @@ form?.addEventListener("submit", (event) => {
   ].filter(Boolean);
 
   formNote.textContent = `تم استلام طلبك${summary.length ? ` (${summary.join("، ")})` : ""}. سنتواصل معك لتأكيد المحاضرة المجانية.`;
+  showToast("تم إرسال طلب الحجز بنجاح.", "success");
   form.reset();
   setSelectedSubject("", { silent: true });
   setSelectedPlan("", { silent: true });
@@ -418,6 +686,14 @@ form?.addEventListener("input", (event) => {
   event.target?.classList?.remove("field-invalid");
   saveDraft();
   updateFormReadyState();
+  updateBookingNote();
+});
+
+getField("phone")?.addEventListener("blur", (event) => {
+  event.target.value = normalizePhone(event.target.value);
+  saveDraft();
+  updateFormReadyState();
+  updateBookingNote();
 });
 
 form?.addEventListener("change", (event) => {
@@ -428,6 +704,7 @@ form?.addEventListener("change", (event) => {
     saveDraft();
   }
   updateFormReadyState();
+  updateBookingNote();
 });
 
 revealItems.forEach((item) => item.classList.add("reveal"));
@@ -447,6 +724,27 @@ if ("IntersectionObserver" in window && !prefersReducedMotion.matches) {
   revealItems.forEach((item) => revealObserver.observe(item));
 } else {
   revealItems.forEach((item) => item.classList.add("is-visible"));
+}
+
+if (statsPanel) {
+  statValues.forEach((value) => {
+    value.dataset.metricOriginal = value.textContent.trim();
+  });
+
+  if ("IntersectionObserver" in window) {
+    const statsObserver = new IntersectionObserver(
+      (entries, observer) => {
+        if (!entries.some((entry) => entry.isIntersecting)) return;
+        runStats();
+        observer.disconnect();
+      },
+      { threshold: 0.42 }
+    );
+
+    statsObserver.observe(statsPanel);
+  } else {
+    runStats();
+  }
 }
 
 const sectionLinks = Array.from(navLinks)
