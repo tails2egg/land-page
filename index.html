@@ -1,0 +1,520 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>أكاديمية التميز | تعليم إنجليزي وتدريس خصوصي</title>
+    <meta
+      name="description"
+      content="منصة تدريس عربية لحجز جلسات تعليم إنجليزية مباشرة من مستوى A1 إلى C1 مع مدرسين متخصصين."
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800;900&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header class="site-header" id="top">
+      <nav class="nav-shell" aria-label="التنقل الرئيسي">
+        <a class="brand" href="#top" aria-label="أكاديمية التميز">
+          <span class="brand-mark" aria-hidden="true">
+            <svg viewBox="0 0 64 64" role="img">
+              <path d="M8 25 32 12l24 13-24 13L8 25Z" />
+              <path d="M18 34c0 10 6 17 14 17s14-7 14-17" />
+              <path d="M20 47c-5 1-9 3-12 7h48c-3-4-7-6-12-7" />
+              <path d="M32 38c-3-5-9-3-9 2 0 6 9 10 9 10s9-4 9-10c0-5-6-7-9-2Z" />
+            </svg>
+          </span>
+          <span>أكاديمية التميز</span>
+        </a>
+
+        <button class="icon-button menu-toggle" type="button" aria-label="فتح القائمة" aria-expanded="false">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M4 7h16M4 12h16M4 17h16" />
+          </svg>
+        </button>
+
+        <div class="nav-links" id="navLinks">
+          <a class="active" href="#top">الرئيسية</a>
+          <a href="#programs">البرامج</a>
+          <a href="#subjects">الكتب</a>
+          <a href="#resources">مصادر مجانية</a>
+          <a href="#faq">أخرى</a>
+        </div>
+
+        <button class="login-btn" type="button" data-open-login>
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4" />
+            <path d="M10 17l5-5-5-5" />
+            <path d="M15 12H3" />
+          </svg>
+          تسجيل الدخول
+        </button>
+      </nav>
+    </header>
+
+    <main>
+      <section class="hero section-band" aria-labelledby="hero-title">
+        <div class="hero-copy">
+          <div class="partner-row" aria-label="شركاء رسميون">
+            <span class="mini-logo" aria-hidden="true">
+              <svg viewBox="0 0 64 64">
+                <path d="M8 25 32 12l24 13-24 13L8 25Z" />
+                <path d="M18 34c0 10 6 17 14 17s14-7 14-17" />
+                <path d="M20 47c-5 1-9 3-12 7h48c-3-4-7-6-12-7" />
+                <path d="M32 38c-3-5-9-3-9 2 0 6 9 10 9 10s9-4 9-10c0-5-6-7-9-2Z" />
+              </svg>
+            </span>
+            <span class="cross">×</span>
+            <strong>IELTS</strong>
+            <span class="idp-mark">idp</span>
+            <small>شريك رسمي مع</small>
+          </div>
+
+          <p class="pill">A globally connected community</p>
+          <h1 id="hero-title">تعليم إنجليزية وتدريس خصوصي بإتقان وأفضل الأساليب</h1>
+          <p class="hero-lead">
+            مدرسون خبراء، خطط تعلم واضحة، وجلسات مباشرة تناسب وقتك ومستواك من أول حصة.
+          </p>
+          <div class="hero-actions">
+            <button class="primary-btn" type="button" data-book>
+              سجل لمحاضرة مجانية
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M19 12H5" />
+                <path d="m12 19-7-7 7-7" />
+              </svg>
+            </button>
+            <a class="ghost-btn" href="#programs">استعرض البرامج</a>
+          </div>
+        </div>
+
+        <div class="hero-visual" aria-label="طلاب ومدرسون في جلسة تعليمية">
+          <div class="visual-orbit" aria-hidden="true"></div>
+          <div class="tutor-photo" aria-hidden="true"></div>
+          <div class="benefit-panel">
+            <article>
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 21V5a2 2 0 0 1 2-2h12v18l-7-4-7 4Z" /></svg>
+              <h3>1- طرق التعلم المرنة</h3>
+              <p>تعلم على طريقتك وفي الوقت المناسب لك.</p>
+            </article>
+            <article>
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" /><path d="M9 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8Z" /><path d="M23 21v-2a4 4 0 0 0-3-3.87" /></svg>
+              <h3>2- التقارب الثقافي</h3>
+              <p>تواصل وتفاعل مع مجتمع عالمي.</p>
+            </article>
+            <article>
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m12 2 3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2Z" /></svg>
+              <h3>3- المناهج المعتمدة</h3>
+              <p>مناهج مختارة من خبراء التعليم.</p>
+            </article>
+            <article>
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12S4 16 4 10a8 8 0 1 1 16 0Z" /><path d="M12 10h.01" /></svg>
+              <h3>4- متاح في أي مكان</h3>
+              <p>تعلم في أي مكان وفي أي وقت.</p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="steps section-wrap" id="programs" aria-labelledby="steps-title">
+        <p class="section-kicker lesson-kicker">كيف نعمل</p>
+        <h2 id="steps-title">رحلتك للتعلم في <span>4 خطوات</span></h2>
+        <p class="steps-lead">خطوات بسيطة تقربك من هدفك وتضمن لك تجربة تعليمية مميزة</p>
+        <div class="step-track">
+          <article class="step-card">
+            <span class="step-icon"><svg viewBox="0 0 24 24"><path d="m21 21-4.3-4.3" /><circle cx="11" cy="11" r="8" /></svg></span>
+            <span class="step-number">01</span>
+            <h3>ابحث عن دروس</h3>
+            <p>تصفح الدروس واختر المناسبة لأهدافك واحتياجاتك.</p>
+          </article>
+          <article class="step-card">
+            <span class="step-icon"><svg viewBox="0 0 24 24"><path d="M8 2v4M16 2v4M3 10h18" /><rect x="3" y="4" width="18" height="18" rx="2" /></svg></span>
+            <span class="step-number">02</span>
+            <h3>احجز جلسة</h3>
+            <p>اختر الوقت المناسب لك واحجز جلستك عبر التقويم.</p>
+          </article>
+          <article class="step-card">
+            <span class="step-icon"><svg viewBox="0 0 24 24"><path d="m22 8-6 4 6 4V8Z" /><rect x="2" y="6" width="14" height="12" rx="2" /></svg></span>
+            <span class="step-number">03</span>
+            <h3>ابدأ التعلم</h3>
+            <p>انضم إلى الجلسة وتعلم من أستاذك في المجال.</p>
+          </article>
+          <article class="step-card">
+            <span class="step-icon"><svg viewBox="0 0 24 24"><path d="M3 3v18h18" /><path d="m7 14 4-4 4 4 5-7" /></svg></span>
+            <span class="step-number">04</span>
+            <h3>تتبع تقدمك</h3>
+            <p>راقب تقدمك وحقق أهدافك التعليمية بخطة واضحة.</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="subjects section-wrap" id="subjects" aria-labelledby="subjects-title">
+        <p class="section-kicker lesson-kicker">اختر مستواك في الإنجليزية</p>
+        <h2 id="subjects-title">دروس الإنجليزية من A1 إلى C1</h2>
+        <p class="subjects-lead">مناهج متكاملة تناسب جميع المستويات واحتياجاتك التعليمية</p>
+        <div class="subject-grid">
+          <button class="subject-card orange" type="button" data-subject="A1 - مبتدئ">
+            <span class="lesson-icon">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="6" y="3" width="12" height="18" rx="2" /><path d="M9 7h6M9 17l3-2 3 2v-6H9v6Z" /></svg>
+            </span>
+            <span class="dot-pattern" aria-hidden="true"></span>
+            <strong>A1</strong>
+            <span>الحروف، الكلمات اليومية، والجمل الأساسية</span>
+            <em>مبتدئ</em>
+          </button>
+          <button class="subject-card teal" type="button" data-subject="A2 - أساسي">
+            <span class="lesson-icon">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m16 18 6-6-6-6M8 6l-6 6 6 6" /></svg>
+            </span>
+            <span class="dot-pattern" aria-hidden="true"></span>
+            <strong>A2</strong>
+            <span>محادثات بسيطة، وصف الروتين، وفهم العبارات الشائعة</span>
+            <em>أساسي</em>
+          </button>
+          <button class="subject-card purple" type="button" data-subject="B1 - متوسط">
+            <span class="lesson-icon">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 2v7.31L5.4 17.5A3 3 0 0 0 8 22h8a3 3 0 0 0 2.6-4.5L14 9.31V2" /><path d="M8.5 2h7" /></svg>
+            </span>
+            <span class="dot-pattern" aria-hidden="true"></span>
+            <strong>B1</strong>
+            <span>تحدث بثقة، كتابة فقرات، وفهم الدروس والمواقف اليومية</span>
+            <em>متوسط</em>
+          </button>
+          <button class="subject-card blue" type="button" data-subject="B2 - فوق المتوسط">
+            <span class="lesson-icon">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 19 19 5 5 12l7 2 2 7Z" /></svg>
+            </span>
+            <span class="dot-pattern" aria-hidden="true"></span>
+            <strong>B2</strong>
+            <span>نقاشات أطول، قواعد متقدمة، وكتابة أكاديمية أو عملية</span>
+            <em>فوق المتوسط</em>
+          </button>
+          <button class="subject-card pink" type="button" data-subject="C1 - متقدم">
+            <span class="lesson-icon">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 15a4 4 0 0 1-4 4H8l-5 3V7a4 4 0 0 1 4-4h10a4 4 0 0 1 4 4Z" /></svg>
+            </span>
+            <span class="dot-pattern" aria-hidden="true"></span>
+            <strong>C1</strong>
+            <span>طلاقة عالية، مفردات احترافية، وتحضير IELTS متقدم</span>
+            <em>متقدم</em>
+          </button>
+        </div>
+      </section>
+
+      <section class="stats section-wrap" aria-label="إحصائيات المنصة">
+        <div class="stats-panel">
+          <article>
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" /><circle cx="9" cy="7" r="4" /><path d="M22 21v-2a4 4 0 0 0-3-3.87" /></svg>
+            <strong>10,000+</strong>
+            <span>طالب سعيد</span>
+          </article>
+          <article>
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m22 10-10 6L2 10l10-6 10 6Z" /><path d="M6 12v5c3 3 9 3 12 0v-5" /></svg>
+            <strong>500+</strong>
+            <span>مدرس خبير</span>
+          </article>
+          <article>
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20" /><path d="M4 4.5A2.5 2.5 0 0 1 6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15Z" /></svg>
+            <strong>1,000+</strong>
+            <span>مادة تعليمية</span>
+          </article>
+          <article>
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m12 2 3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2Z" /></svg>
+            <strong>4.9/5</strong>
+            <span>تقييم متوسط</span>
+          </article>
+        </div>
+      </section>
+
+      <section class="institute section-wrap" aria-labelledby="institute-title">
+        <div class="institute-copy">
+          <h2 id="institute-title">ما هو معهد <span>Tutorings</span> التدريب؟</h2>
+          <p>
+            Tutorings هي المعهد الإلكتروني الرائد في السعودية لتعلم اللغة الإنجليزية، ونقدم
+            تجارب تعلم تتوافق مع الثقافة المحلية. نربطك مع مجموعة واسعة من الكورسات في اللغة
+            العامة وصولاً إلى التحضير المحدد لاختبار IELTS، وذلك لتمكين الطلاب من اكتساب اللغة
+            الإنجليزية بثقة مفتوحة بها عالمياً، ولسد الفجوة بين السعودية والعالم.
+          </p>
+          <button class="institute-btn" type="button" data-book>
+            سجل لمحاضرة مجانية مع إحدى المتخصصين
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="m9 18 6-6-6-6" />
+            </svg>
+          </button>
+        </div>
+        <div class="institute-visual" aria-label="متخصصو معهد Tutorings">
+          <div class="institute-photo" aria-hidden="true"></div>
+          <div class="language-card">
+            <span aria-hidden="true">
+              <svg viewBox="0 0 24 24">
+                <circle cx="12" cy="12" r="10" />
+                <path d="M2 12h20" />
+                <path d="M12 2a15.3 15.3 0 0 1 0 20" />
+                <path d="M12 2a15.3 15.3 0 0 0 0 20" />
+              </svg>
+            </span>
+            <strong>اللغة الإنجليزية هي وسيلتك الرئيسية للتواصل عبر العالم</strong>
+          </div>
+          <span class="institute-logo" aria-hidden="true">
+            <svg viewBox="0 0 64 64">
+              <path d="M8 25 32 12l24 13-24 13L8 25Z" />
+              <path d="M18 34c0 10 6 17 14 17s14-7 14-17" />
+              <path d="M20 47c-5 1-9 3-12 7h48c-3-4-7-6-12-7" />
+              <path d="M32 38c-3-5-9-3-9 2 0 6 9 10 9 10s9-4 9-10c0-5-6-7-9-2Z" />
+            </svg>
+          </span>
+        </div>
+      </section>
+
+      <section class="booking section-band" id="resources" aria-labelledby="booking-title">
+        <form class="booking-form" id="bookingForm" novalidate>
+          <label>
+            <span class="field-heading">
+              <span class="field-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24"><path d="M20 21a8 8 0 0 0-16 0" /><circle cx="12" cy="7" r="4" /></svg>
+              </span>
+              <span>
+                الاسم الكامل
+                <small>مثال: أحمد علي</small>
+              </span>
+            </span>
+            <span class="input-wrap">
+              <input name="name" type="text" autocomplete="name" required />
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 21a8 8 0 0 0-16 0" /><circle cx="12" cy="7" r="4" /></svg>
+            </span>
+          </label>
+          <label>
+            <span class="field-heading">
+              <span class="field-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.8 19.8 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.12 4.18 2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.35 1.9.66 2.8a2 2 0 0 1-.45 2.11L8.09 9.86a16 16 0 0 0 6 6l1.23-1.23a2 2 0 0 1 2.11-.45c.9.31 1.84.53 2.8.66A2 2 0 0 1 22 16.92Z" /></svg>
+              </span>
+              رقم الجوال
+            </span>
+            <span class="input-wrap">
+              <input name="phone" type="tel" autocomplete="tel" placeholder="05xxxxxxxx" required />
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.8 19.8 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.12 4.18 2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.35 1.9.66 2.8a2 2 0 0 1-.45 2.11L8.09 9.86a16 16 0 0 0 6 6l1.23-1.23a2 2 0 0 1 2.11-.45c.9.31 1.84.53 2.8.66A2 2 0 0 1 22 16.92Z" /></svg>
+            </span>
+          </label>
+          <label>
+            <span class="field-heading">
+              <span class="field-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20" /><path d="M4 4.5A2.5 2.5 0 0 1 6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15Z" /></svg>
+              </span>
+              المادة المطلوبة
+            </span>
+            <span class="input-wrap">
+              <select name="subject" required>
+                <option value="">اختر مستوى الإنجليزية</option>
+                <option>A1 - مبتدئ</option>
+                <option>A2 - أساسي</option>
+                <option>B1 - متوسط</option>
+                <option>B2 - فوق المتوسط</option>
+                <option>C1 - متقدم</option>
+              </select>
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 12a9 9 0 1 1-9-9" /><path d="m9 12 2 2 4-4" /></svg>
+            </span>
+          </label>
+          <label>
+            <span class="field-heading">
+              <span class="field-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" /><path d="M12 6v6l4 2" /></svg>
+              </span>
+              الوقت المناسب
+            </span>
+            <span class="input-wrap">
+              <select name="time" required>
+                <option value="">اختر الوقت</option>
+                <option>صباحاً</option>
+                <option>بعد الظهر</option>
+                <option>مساءً</option>
+              </select>
+            </span>
+          </label>
+          <button class="booking-submit" type="submit">
+            تأكيد الحجز المجاني
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 2v4M16 2v4M3 10h18" /><rect x="3" y="4" width="18" height="18" rx="2" /></svg>
+          </button>
+          <p class="booking-safe">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 13c0 5-3.5 7.5-8 9-4.5-1.5-8-4-8-9V5l8-3 8 3v8Z" /><path d="m9 12 2 2 4-4" /></svg>
+            حجزك مجاني وآمن 100%
+          </p>
+          <p class="form-note" id="formNote" role="status" aria-live="polite"></p>
+        </form>
+
+        <div class="booking-copy">
+          <p class="trial-pill">محاضرة مجانية</p>
+          <h2 id="booking-title">احجز تجربة تعليمية قصيرة <span>قبل</span> اختيار الخطة</h2>
+          <p>
+            نريد أن تتعرف على طريقتنا في التدريس وتستمتع بتجربة مجانية قصيرة تساعدك على اتخاذ القرار بثقة.
+          </p>
+          <div class="booking-benefits">
+            <article>
+              <span aria-hidden="true">
+                <svg viewBox="0 0 24 24"><path d="M12 2v4" /><path d="M12 18v4" /><path d="M4.93 4.93l2.83 2.83" /><path d="m16.24 16.24 2.83 2.83" /><path d="M2 12h4" /><path d="M18 12h4" /><path d="m4.93 19.07 2.83-2.83" /><path d="m16.24 7.76 2.83-2.83" /><circle cx="12" cy="12" r="3" /></svg>
+              </span>
+              <h3>تعليم مخصص لأهدافك</h3>
+              <p>تركيز على تطورك الحقيقي</p>
+            </article>
+            <article>
+              <span aria-hidden="true">
+                <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8Z" /><path d="M14 2v6h6" /><path d="M8 13h8M8 17h6" /></svg>
+              </span>
+              <h3>خطة تعلم في 4 خطوات</h3>
+              <p>واضحة وسهلة المتابعة</p>
+            </article>
+            <article>
+              <span aria-hidden="true">
+                <svg viewBox="0 0 24 24"><path d="M8 2v4M16 2v4M3 10h18" /><rect x="3" y="4" width="18" height="18" rx="2" /></svg>
+              </span>
+              <h3>أنشطة تفاعلية في الدرس</h3>
+              <p>تجربة تطبيقية ممتعة</p>
+            </article>
+          </div>
+          <div class="booking-arrow" aria-hidden="true"></div>
+        </div>
+      </section>
+
+      <section class="plans section-wrap" aria-labelledby="plans-title">
+        <p class="section-kicker lesson-kicker">باقات مرنة</p>
+        <h2 id="plans-title">اختر خطة تناسب أهدافك الدراسي</h2>
+        <p class="plans-lead">خطط متنوعة تمنحك تجربة تعلم متكاملة وفق احتياجاتك</p>
+        <div class="plan-grid">
+          <article class="plan-card teal-plan">
+            <span class="plan-dots" aria-hidden="true"></span>
+            <span class="plan-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" /><path d="M12 6v6l4 2" /></svg>
+            </span>
+            <h3>جلسة واحدة</h3>
+            <p>جلسة واحدة تفاعلية مع مدرس متخصص.</p>
+            <ul>
+              <li>جلسة مباشرة مع مدرس</li>
+              <li>مدة الجلسة 60 دقيقة</li>
+              <li>تحديد الوقت المناسب لك</li>
+            </ul>
+            <strong><b>49</b> ريال سعودي</strong>
+            <button type="button" data-plan="جلسة واحدة">اختر هذه الخطة</button>
+          </article>
+          <article class="plan-card featured blue-plan">
+            <span class="popular-badge">الأكثر اختياراً ☆</span>
+            <span class="plan-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><path d="m3 8 4 10h10l4-10-6 4-3-7-3 7-6-4Z" /><path d="M7 22h10" /></svg>
+            </span>
+            <h3>خطة شهرية</h3>
+            <p>وصول كامل إلى جميع الدروس والمواد لمدة شهر.</p>
+            <ul>
+              <li>وصول غير محدود للدروس</li>
+              <li>ملخصات وملفات قابلة للتحميل</li>
+              <li>دعم فني طوال فترة الاشتراك</li>
+            </ul>
+            <strong><b>299</b> ريال سعودي</strong>
+            <button type="button" data-plan="خطة شهرية">اختر هذه الخطة</button>
+          </article>
+          <article class="plan-card pink-plan">
+            <span class="plan-dots" aria-hidden="true"></span>
+            <span class="plan-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><path d="M9 11l3 3L22 4" /><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11" /></svg>
+            </span>
+            <h3>تحضير اختبار</h3>
+            <p>دروس مركزة لمساعدتك على التحضير لاختباراتك بثقة وفاعلية.</p>
+            <ul>
+              <li>دروس تفاعلية مركزة</li>
+              <li>اختبارات تجريبية</li>
+              <li>تقارير أداء مفصلة</li>
+            </ul>
+            <strong><b>399</b> ريال سعودي</strong>
+            <button type="button" data-plan="تحضير اختبار">اختر هذه الخطة</button>
+          </article>
+        </div>
+        <p class="plan-guarantee">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 13c0 5-3.5 7.5-8 9-4.5-1.5-8-4-8-9V5l8-3 8 3v8Z" /><path d="M9 12h6" /><path d="M12 9v6" /></svg>
+          ضمان رضاك أو استرداد كامل المبلغ
+        </p>
+      </section>
+
+      <section class="faq section-wrap" id="faq" aria-labelledby="faq-title">
+        <p class="section-kicker lesson-kicker">أهلاً بك</p>
+        <h2 id="faq-title">أسئلة شائعة</h2>
+        <p class="faq-lead">إجابات على أكثر الأسئلة التي يطرحها طلابنا</p>
+        <div class="faq-list">
+          <button class="faq-item" type="button" aria-expanded="false">
+            <span class="faq-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><path d="M21 15a4 4 0 0 1-4 4H8l-5 3V7a4 4 0 0 1 4-4h10a4 4 0 0 1 4 4Z" /><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3" /><path d="M12 17h.01" /></svg>
+            </span>
+            <strong>هل المحاضرة الأولى مجانية؟</strong>
+            <span class="faq-toggle" aria-hidden="true"></span>
+            <p>نعم، المحاضرة التعريفية مجانية حتى تتأكد من المدرس والطريقة المناسبة لك.</p>
+          </button>
+          <button class="faq-item" type="button" aria-expanded="false">
+            <span class="faq-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8Z" /><path d="M14 2v6h6" /><path d="m9 15 2 2 4-4" /></svg>
+            </span>
+            <strong>هل أستطيع تغيير المدرس؟</strong>
+            <span class="faq-toggle" aria-hidden="true"></span>
+            <p>نعم، تستطيع طلب تغيير المدرس إذا لم تكن طريقة الشرح مناسبة لأهدافك.</p>
+          </button>
+          <button class="faq-item" type="button" aria-expanded="false">
+            <span class="faq-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2" /><path d="m10 9 5 3-5 3V9Z" /></svg>
+            </span>
+            <strong>هل الجلسات مباشرة أم مسجلة؟</strong>
+            <span class="faq-toggle" aria-hidden="true"></span>
+            <p>الجلسات مباشرة، ويمكن توفير ملخصات ومواد مراجعة بعد كل حصة.</p>
+          </button>
+        </div>
+        <div class="support-panel">
+          <article>
+            <span aria-hidden="true">
+              <svg viewBox="0 0 24 24"><path d="M3 18v-6a9 9 0 0 1 18 0v6" /><path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3v5Z" /><path d="M3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3v5Z" /></svg>
+            </span>
+            <div>
+              <h3>لم تجد إجابتك؟</h3>
+              <p>فريق الدعم لدينا جاهز لمساعدتك</p>
+              <a href="#resources">تواصل معنا</a>
+            </div>
+          </article>
+          <article>
+            <span aria-hidden="true">
+              <svg viewBox="0 0 24 24"><path d="m22 7-8.99 5.72a2 2 0 0 1-2.02 0L2 7" /><rect x="2" y="4" width="20" height="16" rx="2" /></svg>
+            </span>
+            <div>
+              <h3>راسلنا على البريد الإلكتروني</h3>
+              <p>support@tutorings.sa</p>
+              <a class="support-button" href="mailto:support@tutorings.sa">تواصل الآن</a>
+            </div>
+          </article>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div>
+        <strong>أكاديمية التميز</strong>
+        <span>تعليم مباشر، متابعة واضحة، ونتائج قابلة للقياس.</span>
+      </div>
+      <a href="#top">العودة للأعلى</a>
+    </footer>
+
+    <dialog class="login-modal" id="loginModal">
+      <form method="dialog" class="modal-card">
+        <button class="icon-button close-modal" type="button" aria-label="إغلاق">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12" /></svg>
+        </button>
+        <h2>تسجيل الدخول</h2>
+        <label>
+          البريد الإلكتروني
+          <input type="email" placeholder="name@example.com" />
+        </label>
+        <label>
+          كلمة المرور
+          <input type="password" placeholder="••••••••" />
+        </label>
+        <button class="primary-btn full" type="submit">دخول</button>
+      </form>
+    </dialog>
+
+    <script src="script.js"></script>
+  </body>
+</html>
