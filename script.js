@@ -31,11 +31,11 @@ const revealItems = document.querySelectorAll(
 );
 
 const levelNotes = {
-  "A1 - مبتدئ": "ابدأ من الأساسيات حتى تبني قاعدة واضحة.",
-  "A2 - أساسي": "ابدأ بمحادثات بسيطة وتصحيح مستمر.",
-  "B1 - متوسط": "مستوى مناسب لتطوير المحادثة اليومية بثقة.",
-  "B2 - فوق المتوسط": "ابدأ بنقاشات أطول وكتابة عملية أو أكاديمية.",
-  "C1 - متقدم": "ابدأ بتحضير متقدم ومفردات احترافية.",
+  "A1 - مبتدئ": "بداية لطيفة من الأساسيات لتبني قاعدة مريحة.",
+  "A2 - أساسي": "مناسب لمحادثات بسيطة وتوجيه هادئ خطوة بخطوة.",
+  "B1 - متوسط": "بداية جيدة لتطوير المحادثة اليومية بثقة وراحة.",
+  "B2 - فوق المتوسط": "مسار مناسب لنقاشات أعمق وكتابة أوضح.",
+  "C1 - متقدم": "مسار راق للطلاقة والتحضير المتقدم بثبات.",
 };
 
 const levels = Object.keys(levelNotes);
@@ -210,8 +210,10 @@ function updateBookingNote(message) {
   }
 
   const parts = [];
-  if (selectedChoices.level) parts.push(`المستوى ${selectedChoices.level}`);
-  if (selectedChoices.plan) parts.push(`الخطة ${selectedChoices.plan}`);
+  const name = String(getField("name")?.value || "").trim().split(/\s+/).filter(Boolean)[0];
+  const greeting = name ? `${name}، ` : "";
+  if (selectedChoices.level) parts.push(`مستواك ${selectedChoices.level}`);
+  if (selectedChoices.plan) parts.push(`مسارك ${selectedChoices.plan}`);
   if (timeSelect?.value) parts.push(`الوقت ${timeSelect.value}`);
 
   const missing = getMissingBookingFields();
@@ -225,11 +227,11 @@ function updateBookingNote(message) {
   );
 
   if (parts.length && missing.length) {
-    formNote.textContent = `اختياراتك الحالية: ${parts.join("، ")}. الخطوة التالية: ${missing[0]}.`;
+    formNote.textContent = `${greeting}اختياراتك محفوظة: ${parts.join("، ")}. الخطوة التالية بلطف: ${missing[0]}.`;
   } else if (parts.length) {
-    formNote.textContent = `اختياراتك مكتملة: ${parts.join("، ")}. يمكنك تأكيد الحجز الآن.`;
+    formNote.textContent = `${greeting}اختياراتك مكتملة: ${parts.join("، ")}. يمكنك إرسال طلب جلستك الخاصة براحة.`;
   } else if (hasStarted && missing.length) {
-    formNote.textContent = `الخطوة التالية: ${missing[0]}.`;
+    formNote.textContent = `${greeting}الخطوة التالية بلطف: ${missing[0]}. سنرتب لك تجربة واضحة ومريحة.`;
   } else {
     formNote.textContent = "";
   }
@@ -242,10 +244,10 @@ function getMissingBookingFields() {
   const phone = normalizePhone(getField("phone")?.value || "");
   const missing = [];
 
-  if (name.split(/\s+/).filter(Boolean).length < 2) missing.push("اكتب الاسم الكامل");
-  if (!/^05\d{8}$/.test(phone)) missing.push("أدخل رقم جوال صحيح");
-  if (!subjectSelect?.value) missing.push("اختر مستوى الإنجليزية");
-  if (!timeSelect?.value) missing.push("اختر الوقت المناسب");
+  if (name.split(/\s+/).filter(Boolean).length < 2) missing.push("اكتب اسمك الكريم كاملاً");
+  if (!/^05\d{8}$/.test(phone)) missing.push("أدخل رقم تواصل صحيح");
+  if (!subjectSelect?.value) missing.push("حدد المستوى الأقرب لك");
+  if (!timeSelect?.value) missing.push("حدد الوقت الألطف ليومك");
 
   return missing;
 }
@@ -320,9 +322,10 @@ function setSelectedSubject(level, options = {}) {
 function setSelectedPlan(plan, options = {}) {
   selectedChoices.plan = plan || "";
   planButtons.forEach((button) => {
+    button.dataset.defaultLabel ||= button.textContent.trim();
     const card = button.closest(".plan-card");
     card?.classList.toggle("selected", button.dataset.plan === selectedChoices.plan);
-    button.textContent = button.dataset.plan === selectedChoices.plan ? "تم اختيار الخطة" : "اختر هذه الخطة";
+    button.textContent = button.dataset.plan === selectedChoices.plan ? "مسارك محدد بلطف" : button.dataset.defaultLabel;
   });
 
   if (options.scroll) {
@@ -352,20 +355,20 @@ function validateBookingForm() {
 
   const name = String(nameInput?.value || "").trim();
   if (nameInput && name.split(/\s+/).filter(Boolean).length < 2) {
-    nameInput.setCustomValidity("اكتب الاسم الكامل من كلمتين على الأقل.");
+    nameInput.setCustomValidity("اكتب اسمك الكريم من كلمتين على الأقل.");
   }
 
   if (phoneInput) {
     const phone = normalizePhone(phoneInput.value);
     phoneInput.value = phone;
     if (!/^05\d{8}$/.test(phone)) {
-      phoneInput.setCustomValidity("اكتب رقم جوال سعودي صحيح بصيغة 05xxxxxxxx.");
+      phoneInput.setCustomValidity("اكتب رقم تواصل سعودي صحيح بصيغة 05xxxxxxxx.");
     }
   }
 
   requiredFields.forEach((field) => {
     if (!field.value.trim() && !field.validationMessage) {
-      field.setCustomValidity("هذا الحقل مطلوب.");
+      field.setCustomValidity("هذا الحقل يساعدنا على ترتيب تجربتك.");
     }
     const isInvalid = !field.checkValidity();
     field.classList.toggle("field-invalid", isInvalid);
@@ -375,8 +378,8 @@ function validateBookingForm() {
   });
 
   if (firstInvalid) {
-    updateBookingNote(firstInvalid.validationMessage || "يرجى تعبئة كل الحقول قبل تأكيد الحجز.");
-    showToast("راجع الحقول المطلوبة قبل تأكيد الحجز.", "warning");
+    updateBookingNote(firstInvalid.validationMessage || "أكمل الحقول بهدوء حتى نرتب جلستك بشكل أفضل.");
+    showToast("أكمل البيانات الناقصة بهدوء.", "warning");
     firstInvalid.focus({ preventScroll: true });
     return false;
   }
@@ -399,7 +402,7 @@ function restoreDraft() {
     updateBookingNote();
     updateFormReadyState();
     if (draft.name || draft.phone || draft.subject || draft.time || draft.plan) {
-      showToast("استعدنا اختياراتك السابقة.", "info");
+      showToast("استعدنا اختياراتك السابقة لتكمل براحة.", "info");
     }
   } catch {
     try {
@@ -483,17 +486,17 @@ document.querySelectorAll("[data-book]").forEach((button) => {
   button.addEventListener("click", () => {
     if (button.dataset.bookIntent === "specialist") {
       setSelectedPlan("جلسة واحدة", {
-        note: "رائع. احجز جلستك المجانية الآن، وسنحدد مستواك وخطتك مع متخصص قبل أي اشتراك.",
+        note: "جميل. أرسل طلب جلستك الخاصة الآن، وسنحدد مستواك ومسارك مع متخصص بهدوء قبل أي اشتراك.",
       });
     } else if (button.dataset.bookIntent === "quick") {
       setSelectedPlan("جلسة واحدة", {
-        note: "تم اختيار الجلسة المجانية السريعة. اكتب بياناتك وسنرتب الموعد المناسب لك.",
+        note: "تم تحديد الجلسة الخاصة المجانية. أضف بياناتك براحة وسنرتب الموعد المناسب لك باهتمام.",
       });
     }
 
     smoothScrollTo("#resources");
     form?.querySelector("input")?.focus({ preventScroll: true });
-    showToast("انتقلنا لنموذج الحجز المجاني.", "info");
+    showToast("انتقلنا لنموذج الجلسة الخاصة براحة.", "info");
   });
 });
 
@@ -534,13 +537,13 @@ loginForm?.addEventListener("submit", (event) => {
   });
 
   if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailValue)) {
-    email?.setCustomValidity("اكتب بريد إلكتروني صحيح.");
+    email?.setCustomValidity("اكتب بريدك الإلكتروني بشكل صحيح.");
     email?.classList.add("field-invalid");
     firstInvalid = email;
   }
 
   if (passwordValue.length < 6) {
-    password?.setCustomValidity("كلمة المرور يجب أن تكون 6 أحرف على الأقل.");
+    password?.setCustomValidity("كلمة المرور تحتاج 6 أحرف على الأقل.");
     password?.classList.add("field-invalid");
     if (!firstInvalid) {
       firstInvalid = password;
@@ -556,7 +559,7 @@ loginForm?.addEventListener("submit", (event) => {
 
   loginModal?.close();
   loginForm.reset();
-  showToast("تم تسجيل الدخول بنجاح.", "success");
+  showToast("تم الدخول إلى مساحتك بنجاح.", "success");
 });
 
 loginForm?.querySelectorAll("input").forEach((input) => {
@@ -571,9 +574,9 @@ subjectCards.forEach((card) => {
     const suggestedPlan = getSuggestedPlanForLevel(card.dataset.subject || "");
     setSelectedSubject(card.dataset.subject || "", {
       scroll: true,
-      note: `تم اختيار ${card.dataset.subject}${suggestedPlan ? ` واقتراح خطة ${suggestedPlan}` : ""}. أكمل البيانات لتثبيت الحجز.`,
+      note: `تم تحديد ${card.dataset.subject}${suggestedPlan ? ` واقتراح مسار ${suggestedPlan}` : ""}. أكمل البيانات براحة وسنرتب لك تجربة تناسب هدفك.`,
     });
-    showToast("تم تحديث نموذج الحجز حسب مستواك.", "success");
+    showToast("تم تحديث النموذج حسب مستواك بلطف.", "success");
   });
 });
 
@@ -588,11 +591,11 @@ levelAdvisor?.addEventListener("submit", (event) => {
   setSelectedPlan(recommendation.plan);
 
   if (advisorResult) {
-    advisorResult.textContent = `نقترح لك: ${recommendation.level}. ${recommendation.note} والخطة الأنسب: ${recommendation.plan}.`;
+    advisorResult.textContent = `البداية المقترحة لك: ${recommendation.level}. ${recommendation.note} والمسار الأقرب لك: ${recommendation.plan}.`;
   }
 
-  updateBookingNote(`تم اختيار ${recommendation.level} وخطة ${recommendation.plan} بناءً على إجاباتك.`);
-  showToast("المساعد اختار المستوى والخطة المناسبة.", "success");
+  updateBookingNote(`اخترنا لك ${recommendation.level} ومسار ${recommendation.plan} بناءً على إجاباتك. سنبني التجربة حول هدفك بهدوء.`);
+  showToast("المساعد اقترح بداية مناسبة لك.", "success");
 });
 
 planButtons.forEach((button) => {
@@ -604,9 +607,9 @@ planButtons.forEach((button) => {
 
     setSelectedPlan(button.dataset.plan || "", {
       scroll: true,
-      note: `تم اختيار ${button.dataset.plan}${suggestedLevel ? ` واقتراح مستوى ${suggestedLevel}` : ""}. أكمل البيانات لتثبيت الحجز.`,
+      note: `تم تحديد ${button.dataset.plan}${suggestedLevel ? ` واقتراح مستوى ${suggestedLevel}` : ""}. أكمل البيانات براحة وسنجهز لك بداية واضحة.`,
     });
-    showToast(`تم اختيار ${button.dataset.plan}.`, "success");
+    showToast(`تم تحديد ${button.dataset.plan} بلطف.`, "success");
   });
 });
 
@@ -665,12 +668,12 @@ form?.addEventListener("submit", (event) => {
 
   const summary = [
     subjectSelect?.value ? `مستوى ${subjectSelect.value}` : "",
-    selectedChoices.plan ? `خطة ${selectedChoices.plan}` : "",
+    selectedChoices.plan ? `مسار ${selectedChoices.plan}` : "",
     timeSelect?.value ? `موعد ${timeSelect.value}` : "",
   ].filter(Boolean);
 
-  formNote.textContent = `تم استلام طلبك${summary.length ? ` (${summary.join("، ")})` : ""}. سنتواصل معك لتأكيد المحاضرة المجانية.`;
-  showToast("تم إرسال طلب الحجز بنجاح.", "success");
+  formNote.textContent = `تم استلام طلبك${summary.length ? ` (${summary.join("، ")})` : ""}. سنتواصل معك لتأكيد جلستك الخاصة بكل احترام وهدوء.`;
+  showToast("تم إرسال طلب الجلسة بلطف.", "success");
   form.reset();
   setSelectedSubject("", { silent: true });
   setSelectedPlan("", { silent: true });
