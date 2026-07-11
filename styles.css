@@ -283,6 +283,9 @@ svg {
 .primary-btn,
 .ghost-btn,
 .plan-card button {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
   min-height: 54px;
   border: 0;
   border-radius: 10px;
@@ -294,6 +297,30 @@ svg {
   font-weight: 900;
   cursor: pointer;
   transition: transform 0.28s var(--ease), box-shadow 0.28s var(--ease), background 0.28s var(--ease);
+}
+
+.login-btn::before,
+.primary-btn::before,
+.booking-submit::before,
+.plan-card button::before {
+  content: "";
+  position: absolute;
+  inset: -45% auto -45% -42%;
+  z-index: 0;
+  width: 32%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.42), transparent);
+  transform: skewX(-18deg);
+  opacity: 0;
+  pointer-events: none;
+  transition: transform 0.7s var(--ease), opacity 0.7s var(--ease);
+}
+
+.login-btn:hover::before,
+.primary-btn:hover::before,
+.booking-submit:hover::before,
+.plan-card button:hover::before {
+  transform: translateX(520%) skewX(-18deg);
+  opacity: 1;
 }
 
 .login-btn,
@@ -498,6 +525,8 @@ svg {
 }
 
 .hero-signals article {
+  position: relative;
+  overflow: hidden;
   min-height: 76px;
   padding: 14px;
   border: 1px solid rgba(220, 225, 243, 0.72);
@@ -514,9 +543,27 @@ svg {
   transition: transform 0.28s var(--ease), box-shadow 0.28s var(--ease);
 }
 
+.hero-signals article::after {
+  content: "";
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  width: 56%;
+  height: 3px;
+  border-radius: 99px 0 0 0;
+  background: linear-gradient(90deg, var(--primary), var(--cyan), var(--orange));
+  transform: scaleX(0);
+  transform-origin: right;
+  transition: transform 0.32s var(--ease);
+}
+
 .hero-signals article:hover {
   transform: translateY(-3px);
   box-shadow: 0 20px 42px rgba(30, 32, 96, 0.1);
+}
+
+.hero-signals article:hover::after {
+  transform: scaleX(1);
 }
 
 .hero-signals svg {
@@ -982,10 +1029,36 @@ svg {
   transition: transform 0.28s var(--ease), box-shadow 0.28s var(--ease), background 0.28s ease;
 }
 
+.lesson-icon::after {
+  content: "✓";
+  position: absolute;
+  right: 6px;
+  bottom: 8px;
+  width: 34px;
+  height: 34px;
+  border: 3px solid #fff;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  color: #fff;
+  background: var(--level);
+  box-shadow: 0 10px 22px color-mix(in srgb, var(--level), transparent 68%);
+  font-size: 1rem;
+  font-weight: 900;
+  opacity: 0;
+  transform: scale(0.72);
+  transition: opacity 0.24s var(--ease), transform 0.24s var(--ease);
+}
+
 .subject-card:hover .lesson-icon,
 .subject-card.selected .lesson-icon {
   transform: translateX(50%) translateY(-4px) scale(1.03);
   box-shadow: 0 20px 42px color-mix(in srgb, var(--level), transparent 72%);
+}
+
+.subject-card.selected .lesson-icon::after {
+  opacity: 1;
+  transform: scale(1);
 }
 
 .lesson-icon svg {
@@ -1284,41 +1357,107 @@ svg {
   text-align: center;
 }
 
-.institute-btn {
-  width: min(430px, 100%);
-  min-height: 84px;
+.institute-cta {
+  width: min(480px, 100%);
   margin: 0 auto;
-  padding: 0 26px;
+}
+
+.institute-btn {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  width: 100%;
+  min-height: 84px;
+  padding: 0 24px;
   border: 0;
-  border-radius: 14px;
-  display: flex;
-  flex-direction: row-reverse;
+  border-radius: 16px;
+  display: grid;
+  grid-template-columns: 1fr auto;
   align-items: center;
-  justify-content: center;
-  gap: 20px;
+  gap: 18px;
   color: #fff;
-  background: linear-gradient(135deg, #0759c7, #003cae);
-  box-shadow: 0 15px 28px rgba(0, 63, 174, 0.22);
-  font-size: 1.26rem;
-  font-weight: 900;
+  background:
+    linear-gradient(135deg, rgba(255, 255, 255, 0.18), transparent 34%),
+    linear-gradient(135deg, #0759c7 0%, #4938f2 52%, #12b8a6 100%);
+  box-shadow: 0 18px 34px rgba(0, 63, 174, 0.28), 0 0 0 1px rgba(255, 255, 255, 0.16) inset;
   cursor: pointer;
   transition: transform 0.28s var(--ease), box-shadow 0.28s var(--ease);
 }
 
+.institute-btn::before {
+  content: "";
+  position: absolute;
+  inset: -30% auto -30% -38%;
+  z-index: 0;
+  width: 34%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.42), transparent);
+  transform: skewX(-18deg);
+  pointer-events: none;
+  animation: ctaShine 3.4s ease-in-out infinite;
+}
+
 .institute-btn:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 18px 34px rgba(0, 63, 174, 0.28);
+  transform: translateY(-4px);
+  box-shadow: 0 24px 46px rgba(0, 63, 174, 0.34), 0 0 0 1px rgba(255, 255, 255, 0.2) inset;
+}
+
+.institute-btn span {
+  display: grid;
+  gap: 3px;
+  min-width: 0;
+  text-align: right;
+}
+
+.institute-btn strong {
+  font-size: clamp(1.06rem, 2vw, 1.32rem);
+  font-weight: 900;
+  line-height: 1.25;
+}
+
+.institute-btn small {
+  color: rgba(255, 255, 255, 0.84);
+  font-size: 0.92rem;
+  font-weight: 800;
+  line-height: 1.5;
 }
 
 .institute-btn svg {
-  width: 52px;
-  height: 52px;
-  padding: 14px;
+  width: 50px;
+  height: 50px;
+  padding: 13px;
   flex: 0 0 auto;
   color: #0759c7;
   border-radius: 50%;
   background: #fff;
+  box-shadow: 0 10px 20px rgba(7, 89, 199, 0.22);
   stroke-width: 3;
+  transition: transform 0.28s var(--ease);
+}
+
+.institute-btn:hover svg {
+  transform: translateX(-4px);
+}
+
+.cta-proof {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  margin-top: 12px;
+}
+
+.cta-proof span {
+  min-height: 40px;
+  padding: 8px 10px;
+  border: 1px solid rgba(7, 86, 185, 0.14);
+  border-radius: 999px;
+  display: grid;
+  place-items: center;
+  color: #0b55b9;
+  background: rgba(255, 255, 255, 0.84);
+  box-shadow: 0 10px 24px rgba(30, 32, 96, 0.07);
+  font-size: 0.92rem;
+  font-weight: 900;
+  white-space: nowrap;
 }
 
 .institute-visual {
@@ -1633,6 +1772,17 @@ svg {
   background: rgba(255, 255, 255, 0.92);
   box-shadow: 0 24px 60px rgba(30, 32, 96, 0.12);
   backdrop-filter: blur(14px);
+  transition: border-color 0.28s var(--ease), box-shadow 0.28s var(--ease);
+}
+
+.booking-form.is-ready {
+  border-color: rgba(21, 183, 170, 0.42);
+  box-shadow: 0 28px 66px rgba(21, 183, 170, 0.12), 0 24px 60px rgba(30, 32, 96, 0.1);
+}
+
+.booking-form.is-ready .booking-submit {
+  background: linear-gradient(135deg, #12b8a6, #3f4df4);
+  box-shadow: 0 16px 32px rgba(21, 183, 170, 0.28);
 }
 
 .modal-card {
@@ -1721,11 +1871,21 @@ select:focus {
   box-shadow: 0 0 0 4px rgba(72, 56, 244, 0.12);
 }
 
+input.field-invalid,
+select.field-invalid {
+  border-color: #d92352;
+  background: #fff7fa;
+  box-shadow: 0 0 0 4px rgba(217, 35, 82, 0.12);
+}
+
 .full {
   width: 100%;
 }
 
 .booking-submit {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
   min-height: 76px;
   border: 0;
   border-radius: 13px;
@@ -1770,10 +1930,14 @@ select:focus {
 }
 
 .form-note {
-  min-height: 26px;
+  min-height: 34px;
   margin: 0;
+  padding: 8px 12px;
+  border-radius: 10px;
   color: var(--primary);
+  background: rgba(72, 56, 244, 0.06);
   font-weight: 800;
+  line-height: 1.55;
 }
 
 .plan-grid {
@@ -1836,6 +2000,27 @@ select:focus {
 .plan-card:hover {
   transform: translateY(-6px);
   box-shadow: 0 28px 60px rgba(30, 32, 96, 0.12);
+}
+
+.plan-card.selected {
+  border-color: var(--plan);
+  transform: translateY(-6px);
+  box-shadow: 0 28px 60px color-mix(in srgb, var(--plan), transparent 78%);
+}
+
+.plan-card.selected::before {
+  content: "اختيارك";
+  position: absolute;
+  top: 22px;
+  left: 24px;
+  z-index: 2;
+  padding: 7px 14px;
+  border-radius: 999px;
+  color: #fff;
+  background: var(--plan);
+  box-shadow: 0 10px 22px color-mix(in srgb, var(--plan), transparent 72%);
+  font-size: 0.86rem;
+  font-weight: 900;
 }
 
 .plan-card::after {
@@ -2074,6 +2259,11 @@ select:focus {
 .faq-item:hover {
   transform: translateY(-3px);
   box-shadow: 0 24px 48px rgba(30, 32, 96, 0.11);
+}
+
+.faq-item[aria-expanded="true"] {
+  background: linear-gradient(180deg, #fff 0%, #f7f9ff 100%);
+  box-shadow: 0 24px 54px rgba(30, 32, 96, 0.12);
 }
 
 .faq-icon {
@@ -2793,7 +2983,22 @@ select:focus {
 
   .institute-btn {
     min-height: 72px;
+    padding: 14px 16px;
     font-size: 1.05rem;
+  }
+
+  .institute-btn {
+    grid-template-columns: 1fr 44px;
+  }
+
+  .institute-btn svg {
+    width: 44px;
+    height: 44px;
+    padding: 11px;
+  }
+
+  .cta-proof {
+    grid-template-columns: 1fr;
   }
 
   .institute-visual {
@@ -2867,6 +3072,21 @@ select:focus {
   to {
     transform: scaleX(1);
     opacity: 1;
+  }
+}
+
+@keyframes ctaShine {
+  0%,
+  48% {
+    transform: translateX(0) skewX(-18deg);
+    opacity: 0;
+  }
+  58% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateX(520%) skewX(-18deg);
+    opacity: 0;
   }
 }
 
